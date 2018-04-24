@@ -37,13 +37,12 @@ public class AppUser {
 	
 	private String firstName;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
-	private Set<AppProfile> profiles = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Authorisation> authorities = new HashSet<>();
 	
 	@ManyToOne
+	@JsonIgnore
 	private Service service;
 	
 	private String img;
@@ -63,8 +62,6 @@ public class AppUser {
 		
 	}
 
-	
-
 	public String getUsername() {
 		return username;
 	}
@@ -81,9 +78,7 @@ public class AppUser {
 		this.password = password;
 	}
 
-	public Collection<AppProfile> getProfiles() {
-		return profiles;
-	}
+	
 
 	public Set<Authorisation> getAuthorities() {
 		return authorities;
@@ -93,12 +88,7 @@ public class AppUser {
 		this.authorities = authorities;
 	}
 
-	public void setProfiles(Set<AppProfile> profiles) {
-		this.profiles = profiles;
-	}
 	
-	
-
 	public Service getService() {
 		return service;
 	}
@@ -130,12 +120,14 @@ public class AppUser {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "AppUser [ username=" + username + ", password=" + password + ", profiles=" + profiles
-				+ ", authorities=" + authorities + "]";
+		return "AppUser [username=" + username + ", password=" + password + ", lastName=" + lastName + ", firstName="
+				+ firstName + ", authorities="  + ", service=" + service + ", img=" + img + "]";
 	}
+	
+	
+	
 
 }

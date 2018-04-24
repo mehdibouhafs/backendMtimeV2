@@ -26,12 +26,20 @@ public class Customer implements Serializable {
 	private String code;
 	private String name;
 	
-	@OneToMany(mappedBy="customer")
+	@OneToMany(mappedBy="customer",fetch=FetchType.LAZY)
 	@JsonIgnore
 	private Set<Project> projects;
 	
 	public Customer() {
 		projects = new HashSet<>();
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [code=" + code + ", name=" + name + "]";
+	}
+	
+	
+	
 	
 }

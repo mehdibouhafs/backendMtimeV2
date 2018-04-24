@@ -1,7 +1,11 @@
 package ma.munisys.service;
-
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+
+import ma.munisys.entities.Activity;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
@@ -22,5 +26,10 @@ public interface AccountService {
 	
 	public void addAuthorisationToUser(String authorisation,String username);
 	
+	public List<AppProfile> findProfilesByUsers(String username);
+	
+	public List<Authorisation> findAuthorityByPrflName(String profileName);
+	
+	public List<Authorisation> findUserAuthority(String username);
 
 }

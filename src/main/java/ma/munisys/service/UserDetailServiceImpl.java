@@ -27,22 +27,21 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		AppUser user = accountService.findUserByUsername(username);
 		System.out.println("User " + user.toString());
 		if(user == null) throw new UsernameNotFoundException(username);
-		System.out.println("user profiles " + user.getProfiles());
+		System.out.println("user profiles " +accountService.findProfilesByUsers(username));
 		
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		
 		
-		for(AppProfile profile : user.getProfiles()) {
-        	for(Authorisation auth : profile.getAuthorities()) {
+		for(AppProfile profile : accountService.findProfilesByUsers(username)) {
+        	for(Authorisation auth : accountService.findAuthorityByPrflName(profile.getPrflName())) {
         		authorities.add(new SimpleGrantedAuthority(auth.getAuthName()));
         	}
         }
         
-        for(Authorisation auth : user.getAuthorities()) {
+        for(Authorisation auth : accountService.findUserAuthority(username)) {
         	if(!authorities.contains(new SimpleGrantedAuthority(auth.getAuthName()))) {
         		authorities.add(new SimpleGrantedAuthority(auth.getAuthName()));
         	}
-        	
         }
 		
 		

@@ -3,6 +3,8 @@ package ma.munisys.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ma.munisys.dao.AuthRepository;
 import ma.munisys.dao.ProfileRepository;
 import ma.munisys.dao.UserRepository;
+import ma.munisys.entities.Activity;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
@@ -60,7 +63,7 @@ public class AccountServiceImp implements AccountService {
 	public void addProfileToUser(String username, String profileName) {
 		AppProfile profile = profileRepository.findByPrflName(profileName);
 		AppUser user = userRepository.findByUsername(username);
-		user.getProfiles().add(profile);
+		profile.getAppUsers().add(user);
 	}
 
 	@Override
@@ -84,6 +87,26 @@ public class AccountServiceImp implements AccountService {
 		user.getAuthorities().add(authorisation2);
 		
 	}
+	
+	@Override
+	public List<AppProfile> findProfilesByUsers(String username) {
+		// TODO Auto-generated method stub
+		return profileRepository.findProfilesByUsers(username);
+	}
+
+	@Override
+	public List<Authorisation> findAuthorityByPrflName(String profileName) {
+		// TODO Auto-generated method stub
+		return profileRepository.findAuthorityByPrflName(profileName);
+	}
+
+	@Override
+	public List<Authorisation> findUserAuthority(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findUserAuthority(username);
+	}
+
+	
 
 	
 	

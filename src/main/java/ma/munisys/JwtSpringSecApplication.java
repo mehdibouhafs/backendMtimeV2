@@ -15,16 +15,20 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import ma.munisys.dao.ActivityRepository;
 import ma.munisys.dao.ContactRepository;
 import ma.munisys.dao.CustomerDao;
 import ma.munisys.dao.DirectionDao;
 import ma.munisys.dao.EditeurDao;
 import ma.munisys.dao.FormationRepository;
 import ma.munisys.dao.ProjectDao;
+import ma.munisys.dao.RequestRepository;
 import ma.munisys.dao.ServiceDao;
 import ma.munisys.dao.TaskRepository;
 import ma.munisys.dao.TechnologieDao;
 import ma.munisys.dao.TypeActivityRepository;
+import ma.munisys.entities.Activity;
+import ma.munisys.entities.ActivityProject;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Contact;
@@ -33,11 +37,13 @@ import ma.munisys.entities.Direction;
 import ma.munisys.entities.Editeur;
 import ma.munisys.entities.Formation;
 import ma.munisys.entities.Project;
+import ma.munisys.entities.Request;
 import ma.munisys.entities.Service;
 import ma.munisys.entities.Task;
 import ma.munisys.entities.Technologie;
 import ma.munisys.entities.TypeActivity;
 import ma.munisys.service.AccountService;
+import ma.munisys.service.ActivityService;
 
 @SpringBootApplication
 public class JwtSpringSecApplication implements CommandLineRunner {
@@ -70,6 +76,12 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProjectDao projectDao;
+	
+	@Autowired
+	private ActivityRepository activityDao;
+	
+	@Autowired
+	private RequestRepository requestRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JwtSpringSecApplication.class, args);
@@ -110,7 +122,7 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		service.setServName("Système d'information");
 		serviceDao.save(service);
 		
-		 accountService.saveProfile(new AppProfile(null, "Salarie_SI", null));
+		 accountService.saveProfile(new AppProfile(null, "Salarie_SI",null,null));
 		 accountService.saveAuthorisation("read_si_activity");
 		 accountService.saveAuthorisation("write_si_activity");
 		 accountService.saveAuthorisation("delete_si_activity");
@@ -129,7 +141,13 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		
 		AppUser user = accountService.findUserByUsername("mbouhafs");
 		System.out.println("User " + user.toString());
-
+		
+		System.out.println("authorisationsProfile " + accountService.findAuthorityByPrflName("Salarie_SI"));
+	
+		System.out.println("authorisationUsers " + accountService.findUserAuthority("mbouhafs"));
+		
+		Activity  a =  activityDao.save(new ActivityProject(null,new Date(),new Date(),"10:10","10:10",1.0,user,"Projet",new Customer("05959", null, null),"Fes","Domicile",true,null,new Project("prjID2", "F6", "En cours", new Customer("05959", "MUNISYS", null), new Date(), "Mr Khalid", "Réseaux", 15)));
+		System.out.println(a.toString());
 		
 		Stream.of("T1","T2","T3").forEach(t->{
 			taskRepository.save(new Task(null, t));
@@ -159,6 +177,9 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		technologie.setNomTechnologie("JAVA EE");
 		technologie.setEditeur(editeur);
 		technologieDao.save(technologie);
+		
+		
+		requestRepository.save(new Request("1111111111", "objDesc", "ObjIdentiVal", "ContratExcode", new Date(), new Customer("05959", "MUNISYS", null), "Nature de lincident", 1, null));
         
         
 		

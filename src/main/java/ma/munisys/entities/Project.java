@@ -1,5 +1,6 @@
 package ma.munisys.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor
-public class Project {
+public class Project implements Serializable {
 	
 	@Id
 	private String prjId;

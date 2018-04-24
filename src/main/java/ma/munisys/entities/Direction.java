@@ -4,10 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "directions")
@@ -19,7 +22,8 @@ public class Direction {
 	private String name;
 	
 	
-	@OneToMany(mappedBy="direction")
+	@OneToMany(mappedBy="direction",fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Set<Service> services;
 	
 	public Direction() {

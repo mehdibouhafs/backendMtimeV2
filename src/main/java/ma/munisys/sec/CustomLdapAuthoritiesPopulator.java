@@ -36,15 +36,13 @@ public class CustomLdapAuthoritiesPopulator implements LdapAuthoritiesPopulator 
 		
 		 Collection<Authorisation> authorities1 = new ArrayList<>();
 		 
-		
-		
-		for(AppProfile profile : appUser.getProfiles()) {
-        	for(Authorisation auth : profile.getAuthorities()) {
+		for(AppProfile profile : accountService.findProfilesByUsers(username)) {
+        	for(Authorisation auth : accountService.findAuthorityByPrflName(profile.getPrflName())) {
         		authorities1.add(auth);
         	}
         }
         
-        for(Authorisation auth : appUser.getAuthorities()) {
+        for(Authorisation auth : accountService.findUserAuthority(username)) {
         	if(!authorities1.contains(auth)) {
         		authorities1.add(auth);
         	}

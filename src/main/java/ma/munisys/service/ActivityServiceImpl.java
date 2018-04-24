@@ -1,5 +1,6 @@
 package ma.munisys.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import ma.munisys.dao.ActivityRepository;
 import ma.munisys.entities.Activity;
+import ma.munisys.entities.ActivityProject;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -20,7 +22,10 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public Activity saveActivity(Activity activity) {
-		return activityRepository.save(activity);
+		Activity a =  activityRepository.saveAndFlush(activity);
+		Long id = a.getId();
+		System.out.println("findActivity(id) " + activityRepository.findActivity(id));
+		return a;
 	}
 
 	@Override
@@ -29,8 +34,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public Page<Activity> getByPage(int page, int size) {
-		return activityRepository.chercher(new PageRequest(page-1, size));
+	public Page<Activity> findMyActivitiesByMc(String username,String mc,int page, int size) {
+		return activityRepository.findMyActivitiesByMc(username,"%"+mc+"%",new PageRequest(page-1, size));
 	}
 
 	@Override
@@ -48,6 +53,24 @@ public class ActivityServiceImpl implements ActivityService {
 	public void deleteActivity(Long id) {
 	
 		activityRepository.delete(id);
+	}
+
+	@Override
+	public List<Activity> findActivityBetween(String username, Date dteStrt, Date dteEnd) {
+		// TODO Auto-generated method stub
+		return activityRepository.findActivityBetween(username, dteStrt, dteEnd);
+	}
+
+	@Override
+	public Page<Activity> getUserActivities(String username, int page,int size) {
+		// TODO Auto-generated method stub
+		return activityRepository.getUserActivities(username, new PageRequest(page-1, size));
+	}
+
+	@Override
+	public Page<Activity> findAllActivitiesByMc(String mc, int page, int size) {
+		// TODO Auto-generated method stub
+		return activityRepository.findAllyActivitiesByMc("%"+mc+"%", new PageRequest(page-1, size));
 	}
 
 }
