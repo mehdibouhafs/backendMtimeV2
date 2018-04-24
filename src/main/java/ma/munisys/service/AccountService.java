@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Formation;
 
 public interface AccountService {
@@ -30,5 +31,6 @@ public interface AccountService {
 	
 	public Page<Formation> findMyFormation(String username, String mc, int page ,int size);
 	
+	public Page<Certification> findMyCertification(String username, String mc, int page ,int size);
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.munisys.entities.AppUser;
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Formation;
 import ma.munisys.service.AccountService;
 
@@ -45,6 +46,12 @@ public class AccountRestController {
 	@RequestMapping(value="/myformations", method=RequestMethod.GET)
 	public Page<Formation> findMyFormation(@RequestParam String username, @RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return accountService.findMyFormation(username, mc, page, size);
+		
+	}
+	
+	@RequestMapping(value="/mycertifications", method=RequestMethod.GET)
+	public Page<Certification> findMyCertification(@RequestParam String username, @RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return accountService.findMyCertification(username, mc, page, size);
 		
 	}
 

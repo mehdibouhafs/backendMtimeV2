@@ -16,6 +16,7 @@ import ma.munisys.dao.UserRepository;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Formation;
 
 @Service
@@ -98,6 +99,12 @@ public class AccountServiceImp implements AccountService {
 	public Page<Formation> findMyFormation(String username, String mc, int page,int size) {
 		
 		return userRepository.findMyFormation(username, "%"+mc+"%", new PageRequest(page-1, size));
+	}
+	
+	@Override
+	public Page<Certification> findMyCertification(String username, String mc, int page,int size) {
+		
+		return userRepository.findMyCertification(username, "%"+mc+"%", new PageRequest(page-1, size));
 	}
 	
 	

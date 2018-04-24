@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ma.munisys.entities.AppUser;
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Formation;
 
 public interface UserRepository extends JpaRepository<AppUser, String> {
@@ -18,4 +19,6 @@ public interface UserRepository extends JpaRepository<AppUser, String> {
 	@Query("select f from Formation f join f.participants p where p.username = :x and f.frmName like :y")
 	public Page<Formation> findMyFormation(@Param("x") String username, @Param("y") String mc, Pageable pageable);
 
+	@Query("select c from Certification c join c.participants p where p.username = :x and c.certName like :y")
+	public Page<Certification> findMyCertification(@Param("x") String username, @Param("y") String mc, Pageable pageable);
 }
