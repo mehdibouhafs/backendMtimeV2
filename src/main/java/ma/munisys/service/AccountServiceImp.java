@@ -1,8 +1,11 @@
 package ma.munisys.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,7 @@ import ma.munisys.dao.UserRepository;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
+import ma.munisys.entities.Formation;
 
 @Service
 @Transactional // spring pas javax
@@ -85,6 +89,17 @@ public class AccountServiceImp implements AccountService {
 		
 	}
 
+	@Override
+	public List<AppUser> allusers() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public Page<Formation> findMyFormation(String username, String mc, int page,int size) {
+		
+		return userRepository.findMyFormation(username, "%"+mc+"%", new PageRequest(page-1, size));
+	}
+	
 	
 	
 

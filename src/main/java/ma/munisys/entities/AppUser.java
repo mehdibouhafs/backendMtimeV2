@@ -48,6 +48,14 @@ public class AppUser {
 	
 	private String img;
 	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "participants", fetch=FetchType.LAZY)
+	private Set<Formation> formations = new HashSet<>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "participants", fetch=FetchType.LAZY)
+	private Set<Certification> certifications = new HashSet<>();
+	
 	
 	public AppUser() {
 		
@@ -125,6 +133,14 @@ public class AppUser {
 
 	public String getImg() {
 		return img;
+	}
+
+	public Set<Formation> getFormations() {
+		return formations;
+	}
+
+	public void setFormations(Set<Formation> formations) {
+		this.formations = formations;
 	}
 
 	public void setImg(String img) {

@@ -142,10 +142,10 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         
 		for(int i=1;i<6;i++) {
-	        formationRepository.save(new Formation(null, "Formation KIMOCE", df.parse("01/03/2018"), df.parse("10/03/2018"), true));
-	        formationRepository.save(new Formation(null, "Formation SAP", df.parse("01/04/2018"), df.parse("10/04/2019"), true));
+	        formationRepository.save(new Formation(null, "Formation KIMOCE", df.parse("01/03/2018"), df.parse("10/03/2018"), true, null));
+	        formationRepository.save(new Formation(null, "Formation SAP", df.parse("01/04/2018"), df.parse("10/04/2019"), true, null));
 		}
-		formationRepository.save(new Formation(null, "Formation SAP", df.parse("01/04/2018"), df.parse("10/04/2019"), true));
+		formationRepository.save(new Formation(null, "Formation SAP", df.parse("01/04/2018"), df.parse("10/04/2019"), true, null));
 		
 		Editeur editeur = new Editeur();
 		editeur.setNomEditeur("Oracle");

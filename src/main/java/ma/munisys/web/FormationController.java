@@ -1,6 +1,10 @@
 package ma.munisys.web;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +45,10 @@ public class FormationController {
 	@PostMapping(value="/formations")
 	public Formation saveFormation(@RequestBody Formation formation) {
 		
-		return formationService.saveFormation(formation);
+		Long id = formationService.saveFormation(formation).getId();
+		System.out.println(this.findFormationById(id).getParticipants().toString());
+		
+		return this.findFormationById(id);
 	}
 	
 	@RequestMapping(value="/findFormations",method=RequestMethod.GET)
@@ -53,4 +60,7 @@ public class FormationController {
 	public List<Formation> findAll() {
 		return formationService.findAll();
 	}
+	
+	
+	
 }
