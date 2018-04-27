@@ -29,6 +29,11 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	@Query("select a from Activity a where a.id = :x")
 	public Activity findActivity(@Param("x") Long id);
 	
+	@Query(value="select * from Activity a where a.user_username = :x and CONVERT(Date,a.dte_Strt) >= :y and CONVERT(Date,a.dte_End) <= :z",nativeQuery=true)
+	public List<Activity> findAllMyActivitiesByDates(@Param("x")String username,@Param("y")Date dateDebut,@Param("z")Date dateFin);
 	
+	
+	@Query(value="select * from Activity a where a.user_username = :x and CONVERT(Date,a.dte_Strt) = :y or CONVERT(Date,a.dte_End) = :z",nativeQuery=true)
+	public List<Activity> findAllMyActivitiesByDatesForDay(@Param("x")String username,@Param("y")Date dateDebut,@Param("z")Date dateFin);
 
 }

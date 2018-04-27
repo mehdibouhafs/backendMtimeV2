@@ -35,7 +35,8 @@ import lombok.NoArgsConstructor;
 @JsonSubTypes({
 	@Type(name = "Activité projet", value = ActivityProject.class),
 	@Type(name = "Activité recouvrement", value = ActivityRecouvrement.class),
-
+	@Type(name = "Activité support", value = ActivityRequest.class),
+	@Type(name = "Activité congé", value = ActivityHolliday.class),
 })
 public class Activity implements Serializable {
 	

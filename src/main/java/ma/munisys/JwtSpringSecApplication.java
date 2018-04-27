@@ -44,6 +44,7 @@ import ma.munisys.entities.Technologie;
 import ma.munisys.entities.TypeActivity;
 import ma.munisys.service.AccountService;
 import ma.munisys.service.ActivityService;
+import ma.munisys.utils.DateUtils;
 
 @SpringBootApplication
 public class JwtSpringSecApplication implements CommandLineRunner {
@@ -146,8 +147,10 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 	
 		System.out.println("authorisationUsers " + accountService.findUserAuthority("mbouhafs"));
 		
-		Activity  a =  activityDao.save(new ActivityProject(null,new Date(),new Date(),"10:10","10:10",1.0,user,"Projet",new Customer("05959", null, null),"Fes","Domicile",true,null,new Project("prjID2", "F6", "En cours", new Customer("05959", "MUNISYS", null), new Date(), "Mr Khalid", "Réseaux", 15)));
-		System.out.println(a.toString());
+		for(int i=1;i<7;i++) {
+			Activity  a =  activityDao.save(new ActivityProject(null,new Date(),DateUtils.addDaysAndHours(new Date(), 1, 2),"10:10","10:10",1.0,user,"Projet",new Customer("05959", null, null),"Fes","Domicile",true,null,new Project("prjID2", "F6", "En cours", new Customer("05959", "MUNISYS", null), new Date(), "Mr Khalid", "Réseaux", 15)));
+		}
+		//System.out.println(a.toString());
 		
 		Stream.of("T1","T2","T3").forEach(t->{
 			taskRepository.save(new Task(null, t));

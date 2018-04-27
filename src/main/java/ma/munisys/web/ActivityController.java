@@ -1,9 +1,11 @@
 package ma.munisys.web;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,16 @@ public class ActivityController {
 	@Autowired
 	private ActivityService activityService;
 	
+	@RequestMapping(value="/findAllMyActivitiesByDates",method=RequestMethod.GET)
+	public List<Activity> findAllMyActivitiesByDates(@RequestParam(name="username")  String username,@RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		return activityService.findAllMyActivitiesByDates(username, dateDebut, dateFin);
+	}
 	
+	@RequestMapping(value="/findAllMyActivitiesByDatesForDay",method=RequestMethod.GET)
+	public List<Activity> findAllMyActivitiesByDatesFoDay(@RequestParam(name="username")  String username,@RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		return activityService.findAllMyActivitiesByDatesForDay(username, dateDebut, dateFin);
+	}
+
 	@RequestMapping(value="/findMyActivities",method=RequestMethod.GET)
 	public Page<Activity> getUserActivities(@RequestParam(name="username") String username, @RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return activityService.getUserActivities(username, page,size);

@@ -73,4 +73,16 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityRepository.findAllyActivitiesByMc("%"+mc+"%", new PageRequest(page-1, size));
 	}
 
+	@Override
+	public List<Activity> findAllMyActivitiesByDates(String username, Date dateDebut, Date dateFin) {
+		// TODO Auto-generated method stub
+		return activityRepository.findAllMyActivitiesByDates(username, dateDebut, dateFin);
+	}
+
+	@Override
+	public List<Activity> findAllMyActivitiesByDatesForDay(String username, Date dateDebut, Date dateFin) {
+		// TODO Auto-generated method stub
+		return activityRepository.findAllMyActivitiesByDatesForDay(username, dateDebut, dateFin);
+	}
+
 }

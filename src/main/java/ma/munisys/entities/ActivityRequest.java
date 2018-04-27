@@ -24,6 +24,10 @@ public class ActivityRequest extends Activity implements Serializable {
 	
 	@ManyToOne
 	private Request request;
+	
+	public ActivityRequest() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public ActivityRequest(Long id, Date dteStrt, Date dteEnd, String hrStrt, String hrEnd, double durtion,
 			AppUser user, String nature, Customer customer, String ville, String lieu, boolean statut, String comments,

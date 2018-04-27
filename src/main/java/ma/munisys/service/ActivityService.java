@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import ma.munisys.entities.Activity;
@@ -30,6 +31,10 @@ public interface ActivityService {
 	 public List<Activity> findActivityBetween(String username,Date dteStrt,Date dteEnd);
 	
 	 public Page<Activity> getUserActivities(String username,int page,int size);
+	 
+	 public List<Activity> findAllMyActivitiesByDates(String username,Date dateDebut,Date dateFin);
+	 
+	 public List<Activity> findAllMyActivitiesByDatesForDay(String username,Date dateDebut,Date dateFin);
 	 
 	 
 
