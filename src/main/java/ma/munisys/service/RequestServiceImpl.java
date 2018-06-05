@@ -32,6 +32,11 @@ public class RequestServiceImpl implements RequestService  {
 		return requestRepository.findAll();
 	}
 
+	@Override
+	public Page<Request> getmyrequests(String username, String mc, int page, int size) {
+		return requestRepository.mytickets(username, "%"+mc+"%", new PageRequest(page-1, size));
+	}
+
 	
 
 }

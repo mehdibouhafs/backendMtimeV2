@@ -12,21 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="typeActivite",discriminatorType = DiscriminatorType.STRING,length=25)
@@ -36,8 +29,10 @@ import lombok.NoArgsConstructor;
 	@Type(name = "Activité projet", value = ActivityProject.class),
 	@Type(name = "Activité recouvrement", value = ActivityRecouvrement.class),
 	@Type(name = "Activité support", value = ActivityRequest.class),
-	@Type(name = "Activité congé", value = ActivityHolliday.class),
-
+	@Type(name = "Activité congé", value = ActivityHoliday.class),
+	@Type(name = "Activité commerciale", value = ActivityCommercial.class),
+	@Type(name = "Activité SI", value = ActivitySI.class),
+	@Type(name = "Activité assistance", value = ActivityAssistance.class),
 })
 public class Activity implements Serializable {
 	
@@ -70,7 +65,9 @@ public class Activity implements Serializable {
     
     private String comments;
     
+    private Date createdAt;
     
+    private Date updatedAt;
 
 	public Activity(Long id, Date dteStrt, Date dteEnd, String hrStrt, String hrEnd, double durtion, AppUser user,
 			String nature, Customer customer, String ville, String lieu, boolean statut, String comments) {
@@ -89,9 +86,71 @@ public class Activity implements Serializable {
 		this.statut = statut;
 		this.comments = comments;
 	}
+	
+	
 
 	
 	
+
+
+	public Activity(Long id, String typeActivite, Date dteStrt, Date dteEnd, String hrStrt, String hrEnd,
+			double durtion, AppUser user, String nature, Customer customer, String ville, String lieu, boolean statut,
+			String comments, Date createdAt, Date updatedAt) {
+		super();
+		this.id = id;
+		this.typeActivite = typeActivite;
+		this.dteStrt = dteStrt;
+		this.dteEnd = dteEnd;
+		this.hrStrt = hrStrt;
+		this.hrEnd = hrEnd;
+		this.durtion = durtion;
+		this.user = user;
+		this.nature = nature;
+		this.customer = customer;
+		this.ville = ville;
+		this.lieu = lieu;
+		this.statut = statut;
+		this.comments = comments;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+
+
+
+
+
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+
+
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+
+
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+
 
 
 	public Activity() {
@@ -327,10 +386,17 @@ public class Activity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Activity [id=" + id + ", dteStrt=" + dteStrt + ", dteEnd=" + dteEnd + ", hrStrt=" + hrStrt + ", hrEnd="
-				+ hrEnd + ", durtion=" + durtion + ", user=" + user + ", nature=" + nature + ", customer=" + customer
-				+ ", ville=" + ville + ", lieu=" + lieu + ", statut=" + statut + ", comments=" + comments + "]";
+		return "Activity [id=" + id + ", typeActivite=" + typeActivite + ", dteStrt=" + dteStrt + ", dteEnd=" + dteEnd
+				+ ", hrStrt=" + hrStrt + ", hrEnd=" + hrEnd + ", durtion=" + durtion + ", user=" + user + ", nature="
+				+ nature + ", customer=" + customer + ", ville=" + ville + ", lieu=" + lieu + ", statut=" + statut
+				+ ", comments=" + comments + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
+
+
+
+
+
+	
     
     
     

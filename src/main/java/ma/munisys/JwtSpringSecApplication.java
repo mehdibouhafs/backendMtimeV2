@@ -11,12 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import ma.munisys.dao.ActivityRepository;
-import ma.munisys.dao.ContactRepository;
 import ma.munisys.dao.CustomerDao;
 import ma.munisys.dao.DirectionDao;
 import ma.munisys.dao.EditeurDao;
@@ -31,7 +27,6 @@ import ma.munisys.entities.Activity;
 import ma.munisys.entities.ActivityProject;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
-import ma.munisys.entities.Contact;
 import ma.munisys.entities.Customer;
 import ma.munisys.entities.Direction;
 import ma.munisys.entities.Editeur;
@@ -43,10 +38,11 @@ import ma.munisys.entities.Task;
 import ma.munisys.entities.Technologie;
 import ma.munisys.entities.TypeActivity;
 import ma.munisys.service.AccountService;
-import ma.munisys.service.ActivityService;
 
 @SpringBootApplication
 public class JwtSpringSecApplication implements CommandLineRunner {
+	
+
 	
 	@Autowired
 	private TaskRepository taskRepository;
@@ -97,6 +93,9 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		
+		/*
 		
 		customerDao.save(new Customer("05959", "MUNISYS", null));
 		customerDao.save(new Customer("05960", "ONCF", null));
@@ -178,10 +177,10 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		technologie.setEditeur(editeur);
 		technologieDao.save(technologie);
 		
+		Request request = new Request("1111111111", "objDesc", "ObjIdentiVal", "ContratExcode", new Date(), new Customer("05959", "MUNISYS", null), "Nature de lincident", 1, null);
 		
-		requestRepository.save(new Request("1111111111", "objDesc", "ObjIdentiVal", "ContratExcode", new Date(), new Customer("05959", "MUNISYS", null), "Nature de lincident", 1, null));
-        
-        
+		requestRepository.save(request);	*/
+       
 		
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ma.munisys.entities.Certification;
-import ma.munisys.entities.Formation;
 
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 	

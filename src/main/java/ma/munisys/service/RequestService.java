@@ -15,6 +15,8 @@ public interface RequestService {
 	
 	public List<Request> findAll();
 	
+	public Page<Request> getmyrequests(String username,String mc,int page,int size);
+	
 		
 	
 }
