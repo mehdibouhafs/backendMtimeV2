@@ -1,7 +1,9 @@
 package ma.munisys.entities;
 
-import java.util.Collection;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,10 +37,12 @@ public class Request {
     private int rqtStsInCde;
     
     @ManyToMany(fetch=FetchType.LAZY)
-    private Collection<AppUser> users;
+    private Set<AppUser> users = new HashSet<>();
+    
+    
 
 	public Request(String rqtExcde, String objDsc, String objIdentVal, String cntExcde, Date rqtDte, Customer cpyInCde,
-			String rqtNatDsc, int rqtStsInCde, Collection<AppUser> users) {
+			String rqtNatDsc, int rqtStsInCde, Set<AppUser> users) {
 		super();
 		this.rqtExcde = rqtExcde;
 		this.objDsc = objDsc;
@@ -51,6 +54,8 @@ public class Request {
 		this.rqtStsInCde = rqtStsInCde;
 		this.users = users;
 	}
+	
+	
     
     
     

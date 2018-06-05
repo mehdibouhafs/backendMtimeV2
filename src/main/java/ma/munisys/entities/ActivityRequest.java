@@ -10,11 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("Activité support")
@@ -24,16 +19,16 @@ public class ActivityRequest extends Activity implements Serializable {
 	
 	@ManyToOne
 	private Request request;
-	
-	public ActivityRequest() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public ActivityRequest(Long id, Date dteStrt, Date dteEnd, String hrStrt, String hrEnd, double durtion,
 			AppUser user, String nature, Customer customer, String ville, String lieu, boolean statut, String comments,
 			Request request) {
 		super(id, dteStrt, dteEnd, hrStrt, hrEnd, durtion, user, nature, customer, ville, lieu, statut, comments);
 		this.request = request;
+	}
+	
+	public ActivityRequest() {
+		
 	}
 
 	public Request getRequest() {

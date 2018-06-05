@@ -12,4 +12,8 @@ public interface RequestRepository extends JpaRepository<Request, String> {
 
 	@Query("select r from Request r where r.rqtExcde like :x")
 	public Page<Request> chercher(@Param("x") String mc,Pageable pageable);
+	
+	@Query("select r from Request r join r.users u where u.username=:u and r.rqtExcde like :x")
+	public Page<Request> mytickets(@Param("u") String username, @Param("x") String mc,Pageable pageable);
+	
 }
