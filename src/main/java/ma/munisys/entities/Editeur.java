@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -16,13 +17,22 @@ public class Editeur implements Serializable {
 	
 	private String nomEditeur;
 	
-	@OneToMany(mappedBy="editeur")
-	private Set<Technologie> technologies;
+	
 	
 	
 	public Editeur() {
 		//technologies = new HashSet<>();
 	}
+	
+	
+
+	public Editeur(Long id, String nomEditeur) {
+		super();
+		this.id = id;
+		this.nomEditeur = nomEditeur;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -41,6 +51,8 @@ public class Editeur implements Serializable {
 	public void setNomEditeur(String nomEditeur) {
 		this.nomEditeur = nomEditeur;
 	}
+
+	
 	
 
 }

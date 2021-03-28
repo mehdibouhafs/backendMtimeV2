@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "services")
 public class Service implements Serializable {
@@ -18,6 +20,9 @@ public class Service implements Serializable {
 	
 	@ManyToOne
 	private Direction direction;
+	
+	@ManyToOne
+	private AppUser responsable;
 	
 	public Service() {
 		
@@ -45,6 +50,15 @@ public class Service implements Serializable {
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
+	}
+	
+	@JsonIgnore
+	public AppUser getResponsable() {
+		return responsable;
+	}
+
+	public void setResponsable(AppUser responsable) {
+		this.responsable = responsable;
 	}
 	
 	

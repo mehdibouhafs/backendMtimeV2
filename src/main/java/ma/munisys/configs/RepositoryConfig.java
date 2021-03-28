@@ -8,6 +8,8 @@ import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.Customer;
 import ma.munisys.entities.Direction;
 import ma.munisys.entities.Editeur;
+import ma.munisys.entities.Offre;
+import ma.munisys.entities.Produit;
 import ma.munisys.entities.Project;
 import ma.munisys.entities.Service;
 import ma.munisys.entities.Technologie;
@@ -30,6 +32,8 @@ public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
     	config.exposeIdsFor(Editeur.class);
     	config.exposeIdsFor(Technologie.class);
     	config.exposeIdsFor(Service.class);
+    	config.exposeIdsFor(Produit.class);
+    	config.exposeIdsFor(Offre.class);
     }
 
 }

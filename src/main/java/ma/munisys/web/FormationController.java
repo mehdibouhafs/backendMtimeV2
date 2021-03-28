@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Formation;
 import ma.munisys.service.FormationService;
 
@@ -22,6 +23,7 @@ public class FormationController {
 	
 	@Autowired
 	private FormationService formationService;
+	
 	
 	@RequestMapping(value="/formations/{id}",method=RequestMethod.GET)
 	public Formation findFormationById(@PathVariable("id") Long id) {
@@ -46,11 +48,36 @@ public class FormationController {
 	
 	@RequestMapping(value="/findFormations",method=RequestMethod.GET)
 	public Page<Formation> getByPage(@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
-		return formationService.getByPage("%"+mc+"%", page, size);
+		return formationService.getByPage(mc, page, size);
 	}
 
 	@RequestMapping(value="/formations",method=RequestMethod.GET)
 	public List<Formation> findAll() {
 		return formationService.findAll();
 	}
+	
+	@RequestMapping(value="/findMyFormations",method=RequestMethod.GET)
+	public Page<Formation> getMyFormations(@RequestParam(name="username") String username,@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return formationService.getMyFormations(username, mc, page, size);
+	}
+	
+	@RequestMapping(value="/getFormationToValide",method=RequestMethod.GET)
+	public Page<Formation> getFormationToValide(@RequestParam(name="idService") Long idService, @RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return formationService.getFormationToValide(idService, page, size);
+	}
+	
+	@RequestMapping(value="/getFormationGroupe",method=RequestMethod.GET)
+	public Page<Formation> getFormationGroupe(@RequestParam(name="idService") Long idService, @RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return formationService.getFormationGroupe(idService, page, size);
+	}
+	
+	@PostMapping(value="/outlookFormations")
+	public String addFormationToOutlook(@RequestBody Formation formation) {
+		return formationService.addFormationToOutlook(formation);
+	}
+	
+	
+	
+	
+	
 }

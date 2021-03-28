@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import ma.munisys.entities.Certification;
 import ma.munisys.entities.Contact;
 import ma.munisys.entities.Formation;
 
@@ -21,9 +22,18 @@ public interface FormationService {
 	
 	public List<Formation> findAll();
 	
-	public Formation updateFormation(@PathVariable Long id, Formation formation);
+	public Formation updateFormation(Long id, Formation formation);
 	
 	public void deleteFormation(Long id);
-		
+	
+	public Page<Formation> getMyFormations(String username, String mc, int page, int size);
+	
+	public Page<Formation> getFormationToValide(Long idService, int page, int size);
+	
+	public Page<Formation> getFormationGroupe(Long idService, int page, int size);
+	
+	public String addFormationToOutlook(Formation formation);
+	
+	
 	
 }

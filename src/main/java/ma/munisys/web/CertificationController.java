@@ -15,7 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ma.munisys.entities.Certification;
+import ma.munisys.entities.EmpCertification;
+import ma.munisys.entities.Formation;
 import ma.munisys.model.Notification;
 import ma.munisys.service.CertificationService;
 import ma.munisys.service.NotificationService;
@@ -28,41 +33,11 @@ public class CertificationController {
 	@Autowired
 	private CertificationService certificationService;
 	
-	@Autowired
-	private NotificationService notificationService;
-	
-	@Autowired
-	private SimpMessagingTemplate messagingTemplate;
-	
-	/**
-	   * POST  /some-action  -> do an action.
-	   * 
-	   * After the action is performed will be notified UserA.
-	   */
-	  @RequestMapping(value = "/some-action", method = RequestMethod.POST)
-	  @ResponseBody
-	  public ResponseEntity<?> someAction() {
-
-	    // Do an action here
-	    // ...
-	    
-	    // Send the notification to "UserA" (by username)
-		  messagingTemplate.convertAndSendToUser(
-			      "mbouhafs", 
-			      "/topic/greetings", 
-			      new Notification("teste mbouhafs")
-			    );
-	    
-	    // Return an http 200 status code
-	    return new ResponseEntity<>(HttpStatus.OK);
-	  }
-	  
-	  
 	@RequestMapping(value="/certifications/{id}",method=RequestMethod.GET)
 	public Certification findcertificationById(@PathVariable("id") Long id) {
-		
 		return certificationService.findCertificationById(id);
 	}
+	
 	@RequestMapping(value="/certifications/{id}",method=RequestMethod.PUT)
 	public Certification updatecertification(@PathVariable("id")  Long id,@RequestBody Certification certification) {
 		return certificationService.updateCertification(id, certification);
@@ -81,11 +56,38 @@ public class CertificationController {
 	
 	@RequestMapping(value="/findCertifications",method=RequestMethod.GET)
 	public Page<Certification> getByPage(@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
-		return certificationService.getByPage("%"+mc+"%", page, size);
+		return certificationService.getByPage(mc, page, size);
 	}
 
 	@RequestMapping(value="/certifications",method=RequestMethod.GET)
 	public List<Certification> findAll() {
 		return certificationService.findAll();
 	}
+	
+	@RequestMapping(value="/findMyCertifications",method=RequestMethod.GET)
+	public Page<Certification> getMyCertifications(@RequestParam(name="username") String username,@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		
+		return certificationService.getMyCertifications(username, mc, page, size);
+	}
+	
+	@RequestMapping(value="/getCertificationToValide",method=RequestMethod.GET)
+	public Page<Certification> getCertificationToValide(@RequestParam(name="idService") Long idService, @RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return certificationService.getCertificationToValide(idService, page, size);
+	}
+	
+	@RequestMapping(value="/getCertificationThisMonth",method=RequestMethod.GET)
+	public List<Certification> getCertificationThisMonth(@RequestParam(name="username") String username) {
+		return certificationService.getCertificationThisMonth(username);
+	}
+	
+	@RequestMapping(value="/getCertificationNextMonth",method=RequestMethod.GET)
+	public List<Certification> getCertificationNextMonth(@RequestParam(name="username") String username) {
+		return certificationService.getCertificationNextMonth(username);
+	}
+	
+	@PostMapping(value="/outlookCertifications")
+	public String addFormationToOutlook(@RequestBody Certification certification) {
+		return certificationService.addCertificationToOutlook(certification);
+	}
+	
 }

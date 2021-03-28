@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +25,7 @@ public class Request {
     
     private String objDsc;
     
-    private String objIdentVal;
+    private String objIdentVal;//instance
     
     private String cntExcde;
     
@@ -36,8 +38,18 @@ public class Request {
     
     private int rqtStsInCde;
     
+  
+    @ManyToOne
+    @JsonIgnore
+    private Service service;
+   
+    
+    private String objexcde;
+    
     @ManyToMany(fetch=FetchType.LAZY)
     private Set<AppUser> users = new HashSet<>();
+    
+    private String descriptionDemande;
     
     
 

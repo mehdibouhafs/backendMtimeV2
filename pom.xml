@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ma.munisys</groupId>
 	<artifactId>jwt-spring-sec</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>jwt-spring-sec</name>
 	<description>Project New JWT</description>
@@ -15,7 +16,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.10.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -29,49 +30,58 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-rest</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
+		</dependency>  -->
+		
+		<dependency>
+			<groupId>com.microsoft.ews-java-api</groupId>
+			<artifactId>ews-java-api</artifactId>
+			<version>2.0</version>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+			
+		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			
 		</dependency>
-		
-		 <dependency>
-            <groupId>org.springframework.ldap</groupId>
-            <artifactId>spring-ldap-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-ldap</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.unboundid</groupId>
-            <artifactId>unboundid-ldapsdk</artifactId>
-        </dependency>
-		
+
 		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.unboundid</groupId>
+			<artifactId>unboundid-ldapsdk</artifactId>
+		</dependency>
+
+	<!-- 	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -80,8 +90,8 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		
+		</dependency> -->
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
@@ -92,32 +102,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
+
+		<!-- Web Sockets -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-		
-		<!-- Web Sockets -->
-	    <dependency>
-	      <groupId>org.springframework.boot</groupId>
-	      <artifactId>spring-boot-starter-websocket</artifactId>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.springframework</groupId>
-	      <artifactId>spring-messaging</artifactId>
-	    </dependency>
-		
 		<dependency>
-	      <groupId>org.springframework.boot</groupId>
-	      <artifactId>spring-boot-starter-integration</artifactId>
-    	</dependency>
-    	
-    	<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.5.0</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
 		</dependency>
-		
+
+	<!-- 	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-integration</artifactId>
+		</dependency> -->
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
@@ -128,13 +134,49 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>0.7.4</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+		<dependency>
+		    <groupId>javax.ws.rs</groupId>
+		    <artifactId>javax.ws.rs-api</artifactId>
+		    <version>2.0</version>
+		</dependency>
+		
+		
+		<dependency>
+		    <groupId>com.sun.xml.bind</groupId>
+		    <artifactId>jaxb1-impl</artifactId>
+		    <version>2.0.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.17</version>
+		</dependency>
+			
+		
+		
+		
+		
+		
 	</dependencies>
 
 	<build>
+		<finalName>backendmunitime</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -142,6 +184,23 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+	    <id>prod</id>
+	    <properties>
+	        <activatedProperties>prod</activatedProperties>
+	    </properties>
+	    <activation>
+	        <activeByDefault>true</activeByDefault>
+	    </activation>
+	</profile>
+	<profile>
+	    <id>dev</id>
+	    <properties>
+	        <activatedProperties>release</activatedProperties>
+	    </properties>
+	</profile>
+	</profiles>
 
 
 </project>

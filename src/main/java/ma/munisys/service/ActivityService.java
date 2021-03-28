@@ -27,6 +27,10 @@ public interface ActivityService {
 
 	public List<Activity> findActivityBetween(String username, Date dteStrt, Date dteEnd);
 
+	public List<Long> findActivityDateSaisieBetween(String username, Date dteStrt, Date dteEnd);
+	
+	public List<Activity> findActivityBetween(Long id, String username, Date dteStrt, Date dteEnd);
+	
 	public Page<Activity> getUserActivities(String username, int page, int size);
 
 	public Activity getLastActivity(String username);
@@ -42,9 +46,21 @@ public interface ActivityService {
 	public List<Activity> findAllActivitiesByDates(Date dateDebut, Date dateFin);
 
 	public List<Activity> findAllActivitiesByDatesForDay(Date dateDebut, Date dateFin);
+	
+	public List<Activity> findAllActivitiesByDatesAndService(Long idService, String username, Date dateDebut, Date dateFin);
+
+	public List<Activity> findAllActivitiesByDatesForDayAndService(Long idService, String username, Date dateDebut, Date dateFin);
 
 	public Page<Activity> getActivityToDo(String username, String mc, int page, int size);
 	
 	public Page<Activity> getMyActivityHoliday(String username, int page, int size);
+	
+	public Page<Activity> getActivityRequestByTicket(String rqtExcde, int page, int size);
+	
+	public Page<Activity> getActivityByService(Long idService, String username, String mc, int page, int size, List<String> typeSelected);
+	
+	public Page<Activity> findMyActivityProject(String username, Date start, String mc, int page, int size);
+
+	public Page<Activity> getActivityPlanifiedDirection(String username, String mc, int page, int size);
 	
 }

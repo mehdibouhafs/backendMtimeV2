@@ -9,6 +9,7 @@ import ma.munisys.entities.Activity;
 import ma.munisys.entities.AppProfile;
 import ma.munisys.entities.AppUser;
 import ma.munisys.entities.Authorisation;
+import ma.munisys.entities.Service;
 
 public interface AccountService {
 	
@@ -31,5 +32,7 @@ public interface AccountService {
 	public List<Authorisation> findAuthorityByPrflName(String profileName);
 	
 	public List<Authorisation> findUserAuthority(String username);
+
+	public Service getService(String username);
 
 }

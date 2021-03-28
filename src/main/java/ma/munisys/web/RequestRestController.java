@@ -42,4 +42,23 @@ public class RequestRestController {
 	public Page<Request> findmyrequests(@RequestParam(name="username") String username,@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
 		return requestService.getmyrequests(username, mc, page, size);
 	}
+	
+	@RequestMapping(value="/requests-groupe",method=RequestMethod.GET)
+	public Page<Request> findrequestsGroupe(@RequestParam(name="idService") Long id,@RequestParam(name="mc",defaultValue="") String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return requestService.getrequestsGroupe(id, mc, page, size);
+	}
+	
+	@RequestMapping(value="/requests/customer/{codeClient}/service/{serviceName}",method=RequestMethod.GET)
+	public List<Request> findRequestByCustomerCode(@PathVariable("codeClient") String codeClient,@PathVariable("serviceName") String serviceName) {
+		List<Request> requests = requestService.getTicketByCustomerAndService(codeClient,serviceName);
+		if(requests==null || requests.isEmpty()) throw new RuntimeException("Demandes introuvable pour le client : "+ codeClient +" service : "+serviceName); 
+		return requests;
+	}
+	
+	@RequestMapping(value="/requestsByNature/customer/{codeClient}/service/{serviceName}",method=RequestMethod.GET)
+	public List<Request> findRequestByCustomerCodeAndNature(@PathVariable("codeClient") String codeClient,@PathVariable("serviceName") String serviceName) {
+		List<Request> requests = requestService.getTicketByCustomerAndServiceAndNature(codeClient, serviceName, "Maintenance préventive");
+		if(requests==null || requests.isEmpty()) throw new RuntimeException("Demandes introuvable pour le client : "+ codeClient +" service : "+serviceName + " nature : PM" ); 
+		return requests;
+	}
 }

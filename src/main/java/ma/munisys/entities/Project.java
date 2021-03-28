@@ -2,9 +2,12 @@ package ma.munisys.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,8 +37,10 @@ public class Project implements Serializable {
 	
 	private String bu;
 	
-	private int durtionPrj;
+	private double durtionPrj;
 	
+	private double durtionEnMinutes;
 	
+	private boolean disabled;
 	
 }

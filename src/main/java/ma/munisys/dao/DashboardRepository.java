@@ -22,22 +22,22 @@ public interface DashboardRepository extends JpaRepository<Activity, Long> {
 	@Query("select count(a) from Activity a where a.user.username = :x and a.statut=false")
 	public int getActivitiesPlanified(@Param("x")String username);
 	
-	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(dw, activity.dte_strt) in (1,7) or datepart(dw, activity.dte_end) in (1,7))", nativeQuery=true)
+	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(dw, activity.dte_strt) in (6,7) or datepart(dw, activity.dte_end) in (6,7))", nativeQuery=true)
 	public int getActivitiesRealisedOnWeekEnd(@Param("x")String username);
 	
-	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(dw, activity.dte_strt) in (1,7) and datepart(month, activity.dte_strt)=datepart(month, getdate()) or datepart(dw, activity.dte_end) in (1,7) and datepart(month, activity.dte_end)=datepart(month, getdate()))", nativeQuery=true)
+	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(dw, activity.dte_strt) in (6,7) and datepart(month, activity.dte_strt)=datepart(month, getdate()) and datepart(year, activity.dte_strt)=datepart(year, getdate()) or datepart(dw, activity.dte_end) in (6,7) and datepart(month, activity.dte_end)=datepart(month, getdate()) and datepart(year, activity.dte_end)=datepart(year, getdate()))", nativeQuery=true)
 	public int getActivitiesRealisedOnWeekEndThisMonth(@Param("x")String username);
 	
-	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and (datepart(month, activity.dte_strt)=datepart(month, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()))", nativeQuery=true)
+	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=1 and (datepart(month, activity.dte_strt)=datepart(month, getdate()) and datepart(year, activity.dte_strt)=datepart(year, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()) and datepart(year, activity.dte_end)=datepart(year, getdate()))", nativeQuery=true)
 	public int getActivitiesRealisedOnthisMonth(@Param("x")String username);
 	
-	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=0 and (datepart(month, activity.dte_strt)=datepart(month, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()))", nativeQuery=true)
+	@Query(value="select count(*) from activity where activity.user_username = :x and activity.statut=0 and (datepart(month, activity.dte_strt)=datepart(month, getdate()) and datepart(year, activity.dte_strt)=datepart(year, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()) and datepart(year, activity.dte_end)=datepart(year, getdate()))", nativeQuery=true)
 	public int getActivitiesPlanifiedOnthisMonth(@Param("x")String username);
 	
 	@Query("select new ma.munisys.model.ActivityParType(a.typeActivite, count(a)) from Activity a where a.user.username=:x and a.statut=true group by a.typeActivite")
 	public List<ActivityParType> getActivitiesParType(@Param("x")String username);
 	
-	@Query("select new ma.munisys.model.ActivityParCustomer(a.customer.name, count(a)) from Activity a where a.user.username=:x and a.statut=true and a.typeActivite!='Activité congé' group by a.customer.name")
+	@Query("select new ma.munisys.model.ActivityParCustomer(a.customer.name, count(a)) from Activity a where a.user.username=:x and a.statut=true and a.typeActivite!='Activité congé' and a.customer.name not like '%MUNISYS%' group by a.customer.name")
 	public List<ActivityParCustomer> getNbreActivitiesParCustomer(@Param("x") String username);
 	
 	@Query("select coalesce(sum(a.durtion),0) from Activity a where a.user.username=:x and a.statut=true and a.typeActivite!='Activité congé'")
@@ -46,7 +46,7 @@ public interface DashboardRepository extends JpaRepository<Activity, Long> {
 	@Query("select min(a.dteStrt) from Activity a where a.statut=true and a.user.username=:x")
 	public Date getMinDate(@Param("x") String username);
 	
-	@Query(value="select coalesce(sum(activity.durtion),0) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(month, activity.dte_strt)=datepart(month, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()))", nativeQuery=true)
+	@Query(value="select coalesce(sum(activity.durtion),0) from activity where activity.user_username = :x and activity.statut=1 and activity.type_activite!='Activité congé' and (datepart(month, activity.dte_strt)=datepart(month, getdate()) and datepart(year, activity.dte_strt)=datepart(year, getdate()) or datepart(month, activity.dte_end)=datepart(month, getdate()) and datepart(year, activity.dte_end)=datepart(year, getdate()))", nativeQuery=true)
 	public int getDurtionActivitiesOnthisMonth(@Param("x")String username);
 	
 	@Query("select new ma.munisys.model.DurtionActivityParMonth(month(a.dteStrt), year(a.dteStrt), coalesce(sum(a.durtion), 0)) from Activity a where a.user.username=:x and a.statut=true and a.typeActivite!='Activité congé' group by month(a.dteStrt), year(a.dteStrt) order by year(a.dteStrt), month(a.dteStrt) desc")

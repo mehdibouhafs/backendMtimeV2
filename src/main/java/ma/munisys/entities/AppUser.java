@@ -34,11 +34,11 @@ public class AppUser {
 	private Set<Authorisation> authorities = new HashSet<>();
 	
 	@ManyToOne
-	@JsonIgnore
 	private Service service;
 	
 	private String img;
 	
+	private boolean disabled;
 	
 	public AppUser() {
 		
@@ -111,6 +111,15 @@ public class AppUser {
 
 	public void setImg(String img) {
 		this.img = img;
+	}
+	
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 
 	@Override

@@ -105,8 +105,10 @@ public class AccountServiceImp implements AccountService {
 		// TODO Auto-generated method stub
 		return userRepository.findUserAuthority(username);
 	}
-
 	
+	public ma.munisys.entities.Service getService(String username) {
+		return userRepository.findByUsername(username).getService();
+	}
 
 	
 	

@@ -66,9 +66,11 @@ public class DashboardServiceImpl implements DashboardService {
 		int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
 		int thisYear = Calendar.getInstance().get(Calendar.YEAR);
 		List<DurtionActivityParMonth> liste1 = new ArrayList<DurtionActivityParMonth>();
+		
 		for (int i = thisMonth; i >= 0; i--) {
 			liste1.add(new DurtionActivityParMonth(i + 1, thisYear, 0));
 		}
+		
 		for (int i = 11; i > thisMonth; i--) {
 			liste1.add(new DurtionActivityParMonth(i + 1, thisYear - 1, 0));
 		}
@@ -95,6 +97,7 @@ public class DashboardServiceImpl implements DashboardService {
 					return Integer.compare(o1.getYear(), o2.getYear());
 			}
 		});
+		
 
 		return liste1;
 	}

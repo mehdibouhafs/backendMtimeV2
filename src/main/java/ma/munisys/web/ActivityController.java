@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ma.munisys.entities.Activity;
+import ma.munisys.entities.ActivityProject;
 import ma.munisys.model.DateUtils;
 import ma.munisys.service.ActivityService;
+import ma.munisys.service.EmailService;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -23,6 +25,9 @@ public class ActivityController {
 	
 	@Autowired
 	private ActivityService activityService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	
 	@RequestMapping(value="/findMyActivities",method=RequestMethod.GET)
@@ -35,10 +40,15 @@ public class ActivityController {
 		
 		return activityService.findActivityById(id);
 	}
+	
 	@RequestMapping(value="/activities/{id}",method=RequestMethod.PUT)
 	public Activity updateActivity(@PathVariable("id")  Long id,@RequestBody Activity activity) {
+		/*if(activity.isStatut() && activityService.findActivityBetween(id, activity.getUser().getUsername(), activity.getDteStrt(), activity.getDteEnd()).size()>0) {
+			 throw new RuntimeException("Vous ne pouvez pas réaliser deux activités en même temps");
+		}*/
 		return activityService.updateActivity(id, activity);
 	}
+	
 	
 	@RequestMapping(value="/activities/{id}",method=RequestMethod.DELETE)
 	public void deleteActivity(@PathVariable("id") Long id) {
@@ -48,10 +58,43 @@ public class ActivityController {
 	@RequestMapping(value="/activities",method = RequestMethod.POST)
 	public Activity saveactivity(@RequestBody Activity activity) {
 		
-		if(activityService.findActivityBetween(activity.getUser().getUsername(), activity.getDteStrt(), activity.getDteEnd()).size()>0) {
-			 throw new RuntimeException("Vous ne pouvez pas réaliser deux activitées en meme temps à part des activités d'assistance");
+		/*if(activity.isStatut() && activityService.findActivityBetween(activity.getUser().getUsername(), activity.getDteStrt(), activity.getDteEnd()).size()>0) {
+			 throw new RuntimeException("Vous ne pouvez pas réaliser deux activités en même temps");
 		}
+		System.out.println("date strt " + activity.getDteStrt());
+		*/
 		return activityService.saveActivity(activity);
+	}
+	
+	@RequestMapping(value="/save-activity-without-test", method=RequestMethod.POST)
+	public Activity saveActivityWithoutTest(@RequestBody Activity activity) {
+		return activityService.saveActivity(activity);
+	}
+	
+	@RequestMapping(value="/save-list-activity", method=RequestMethod.POST)
+	public List<Activity> saveListActivity(@RequestBody List<Activity> listActivity) {
+		
+		for (Activity activity : listActivity) {
+			this.saveActivityWithoutTest(activity);
+		}
+		
+		return listActivity;
+	}
+	
+	@RequestMapping(value="/save-list-activity-direction", method=RequestMethod.POST)
+	public List<Activity> saveListActivityDirection(@RequestBody List<Activity> listActivity) {
+		
+		for (Activity activity : listActivity) {
+			this.saveActivityWithoutTest(activity);
+			this.emailService.notifyByActivity(activity, "mahdariyassine@gmail.com");
+		}
+		
+		return listActivity;
+	}
+	
+	@RequestMapping(value="/findMyActivityProject", method=RequestMethod.GET)
+	public Page<Activity> findMyActivityProject(@RequestParam(name="username") String username, @RequestParam(name="start") @DateTimeFormat (pattern = "yyyy-MM-dd") Date start, @RequestParam(name="motCle",defaultValue="")String mc, @RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return activityService.findMyActivityProject(username, start, mc, page, size);
 	}
 	
 	@RequestMapping(value="/findMyActivitiesByMc",method=RequestMethod.GET)
@@ -93,6 +136,7 @@ public class ActivityController {
 	
 	@RequestMapping(value="/findAllMyActivitiesByDatesForDay",method=RequestMethod.GET)
 	public List<Activity> findAllMyActivitiesByDatesFoDay(@RequestParam(name="username")  String username,@RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		System.out.println("dteStrt " + dateDebut);
 		return activityService.findAllMyActivitiesByDatesForDay(username, dateDebut, dateFin);
 	}
 	
@@ -104,6 +148,7 @@ public class ActivityController {
 	
 	@RequestMapping(value="/findAllActivitiesByDatesForDay",method=RequestMethod.GET)
 	public List<Activity> findAllActivitiesByDatesFoDay(@RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		//System.out.println("dteStrt " + dateDebut);
 		return activityService.findAllActivitiesByDatesForDay(dateDebut, dateFin);
 	}
 	
@@ -115,6 +160,31 @@ public class ActivityController {
 	@RequestMapping(value="/myactivityholiday", method=RequestMethod.GET)
 	public Page<Activity> getMyActivityHoliday(@RequestParam(name="username") String username, @RequestParam(name="page",defaultValue="1") int page,@RequestParam(name="size",defaultValue="5") int size) {
 		return activityService.getMyActivityHoliday(username, page, size);
+	}
+	
+	@RequestMapping(value="/getActivityRequestByTicket", method=RequestMethod.GET)
+	public Page<Activity> getActivityRequestByTicket(@RequestParam(name="rqtExcde") String rqtExcde, @RequestParam(name="page",defaultValue="1") int page,@RequestParam(name="size",defaultValue="5") int size) {
+		return activityService.getActivityRequestByTicket(rqtExcde, page, size);
+	}
+	
+	@RequestMapping(value="/getActivityByService",method=RequestMethod.GET)
+	public Page<Activity> getActivityByService(@RequestParam(name="idService") Long idService, @RequestParam(name="username",defaultValue="")String username, @RequestParam(name="motCle",defaultValue="")String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size, @RequestParam(name="type", defaultValue="") List<String> typeSelected) {
+		return activityService.getActivityByService(idService, username, mc, page, size, typeSelected);
+	}
+	
+	@RequestMapping(value="/findAllActivitiesByDatesAndService",method=RequestMethod.GET)
+	public List<Activity> findAllActivitiesByDatesAndService(@RequestParam(name="idService") Long idService, @RequestParam(name="username",defaultValue="")String username, @RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		return activityService.findAllActivitiesByDatesAndService(idService, username, dateDebut, dateFin);
+	}
+	
+	@RequestMapping(value="/findAllActivitiesByDatesForDayAndService",method=RequestMethod.GET)
+	public List<Activity> findAllActivitiesByDatesFoDayAndService(@RequestParam(name="idService") Long idService, @RequestParam(name="username",defaultValue="")String username, @RequestParam(name="dteStrt") @DateTimeFormat (pattern = "yyyy-MM-dd")   Date dateDebut,@RequestParam(name="dteEnd")@DateTimeFormat (pattern = "yyyy-MM-dd") Date dateFin) {
+		return activityService.findAllActivitiesByDatesForDayAndService(idService, username, dateDebut, dateFin);
+	}
+	
+	@RequestMapping(value="/getActivityPlanifiedDirection",method=RequestMethod.GET)
+	public Page<Activity> getActivityPlanifiedDirection(@RequestParam(name="username",defaultValue="")String username, @RequestParam(name="motCle",defaultValue="")String mc,@RequestParam(name="page",defaultValue="1")int page,@RequestParam(name="size",defaultValue="5")int size) {
+		return activityService.getActivityPlanifiedDirection(username, mc, page, size);
 	}
 	
 	
