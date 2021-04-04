@@ -40,9 +40,14 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	@Query("select a.id from Activity a where a.user.username=:x and a.createdAt >= :y and a.createdAt <=:z  and a.statut = true order by a.dteStrt ASC" )
 	public List<Long> findActivityBetweenDateSaisie(@Param("x")String username,@Param("y")Date dteStrt,@Param("z") Date dteEnd);
 	
-	/*@Query("select a.id from Activity a where a.user.username=:x and year(a.createdAt) = year(:today) and a.statut = true order by a.dteStrt ASC" )
+
+	@Query("select a from Activity a where a.user.service.id=:idService and a.createdAt >= :y and a.createdAt <=:z  and a.statut = true  order by a.dteStrt,a.user.username,a.typeActivite ASC" )
+	public List<Activity> findActivityBetweenDateSaisieGrouped(@Param("idService") Long idService,@Param("y")Date dteStrt,@Param("z") Date dteEnd);
+	
+	
+	@Query("select a.id from Activity a where a.user.username=:x and year(a.dteStrt) = year(:today) and a.statut = true order by a.dteStrt ASC" )
 	public List<Long> findActivityByUserByYear(@Param("x")String username,@Param("today")Date today);
-	*/
+	
 	@Query("select new ma.munisys.model.DureeActiviteMois(SUM(a.durtion),a.typeActivite,month(a.dteStrt)) from Activity a where a.user.username=:x and year(a.dteStrt) = year(:today) and a.statut = true group by a.typeActivite,month(a.dteStrt)" )
 	public List<DureeActiviteMois> findActivityByUserByYear2(@Param("x")String username,@Param("today")Date today);
 	

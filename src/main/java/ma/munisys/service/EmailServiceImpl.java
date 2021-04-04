@@ -175,13 +175,13 @@ public class EmailServiceImpl implements EmailService {
 									
 								    //cc.add(responsable.getUsername()+"@munisys.net.ma");
 									
-									List<Long> activitiesByService =activityRepository.findActivityByServiceBetweenDateSaisie(user.getService().getId(), lessHoursToDate(startDate),lessHoursToDate( endDate));
+									List<Activity> activitiesByService =activityRepository.findActivityBetweenDateSaisieGrouped(user.getService().getId(), lessHoursToDate(startDate),lessHoursToDate( endDate));
 									
 									Map<String,Set<Activity>> setActivities = new HashMap<String, Set<Activity>>();
 									Map<String,Map<String,Double>> activitiesStatistics = new HashMap<String,Map<String,Double>>();
 									
-									for(Long id : activitiesByService) {
-										Activity a = activityRepository.findOne(id);
+									for(Activity a : activitiesByService) {
+										//Activity a = activityRepository.findOne(id);
 										
 										if(!setActivities.containsKey(a.getUser().getUsername())) {
 											setActivities.put(a.getUser().getUsername(),new HashSet<Activity>());
@@ -312,13 +312,13 @@ public class EmailServiceImpl implements EmailService {
 							if(responsable!=null)
 								if(responsable.getUsername().equals(user.getUsername())) {
 									
-									List<Long> activitiesByService =activityRepository.findActivityByServiceBetweenDateSaisie(user.getService().getId(), lessHoursToDate(startDate),lessHoursToDate( endDate));
+									List<Activity> activitiesByService =activityRepository.findActivityBetweenDateSaisieGrouped(user.getService().getId(), lessHoursToDate(startDate),lessHoursToDate( endDate));
 									
 									Map<String,Set<Activity>> setActivities = new HashMap<String, Set<Activity>>();
 									Map<String,Map<String,Double>> activitiesStatistics = new HashMap<String,Map<String,Double>>();
 									
-									for(Long id : activitiesByService) {
-										Activity a = activityRepository.findOne(id);
+									for(Activity a : activitiesByService) {
+										//Activity a = activityRepository.findOne(id);
 										
 										if(!setActivities.containsKey(a.getUser().getUsername())) {
 											setActivities.put(a.getUser().getUsername(),new HashSet<Activity>());
@@ -434,7 +434,12 @@ public class EmailServiceImpl implements EmailService {
 	            
 	            HSSFSheet sheet = workbook.createSheet("Rapport activité_Semaine"+week+"_"+month);  
 	           
+	            HSSFSheet sheet2 = workbook.createSheet("Analyse activité_Semaine"+week+"_"+month);  
+	            
 	            HSSFSheet sheet3 = workbook.createSheet("Activité_"+Calendar.getInstance().get(Calendar.YEAR));  
+	            
+	            HSSFSheet sheet4 = workbook.createSheet("Détail_activité_"+Calendar.getInstance().get(Calendar.YEAR));  
+		           
 	            HSSFRow rowhead3 = sheet3.createRow((short)0);
 	            
 	            HSSFCell cell1Sheet3=rowhead3.createCell(0);
@@ -466,8 +471,7 @@ public class EmailServiceImpl implements EmailService {
 	            
 	           
 	            
-	          HSSFSheet sheet2 = workbook.createSheet("Analyse activité_Semaine"+week+"_"+month);  
-	            
+	        
 	            HSSFRow rowhead2 = sheet2.createRow((short)0);
 		    
 	            
@@ -502,6 +506,8 @@ public class EmailServiceImpl implements EmailService {
 	            HSSFCell cell10=rowhead.createCell(10);
 	            cell10.setCellValue("Commentaire");
 	            
+	           
+	            
 	            CellStyle style=null;
 	            // Creating a font
 	               HSSFFont font= workbook.createFont();
@@ -529,6 +535,39 @@ public class EmailServiceImpl implements EmailService {
 	               cell9Sheet3.setCellStyle(style);cell10Sheet3.setCellStyle(style);
 	               cell10Sheet6.setCellStyle(style);cell10Sheet4.setCellStyle(style);cell10Sheet5.setCellStyle(style);
 	           
+	               
+	               
+	                rowhead = sheet4.createRow((short)0);
+		            HSSFCell cell0Sheet2 =rowhead.createCell(0);
+		            cell0Sheet2.setCellValue("Date de saisie");
+		            HSSFCell cell1Sheet2=  rowhead.createCell(1);
+		            cell1Sheet2.setCellValue("Date d'intervention");
+		            HSSFCell cell2Sheet2=rowhead.createCell(2);
+		            cell2Sheet2.setCellValue("Type d'activitée");
+		            HSSFCell cell3Sheet2=rowhead.createCell(3);
+		            cell3Sheet2.setCellValue("Client");
+		            HSSFCell cell4Sheet2=rowhead.createCell(4);
+		            cell4Sheet2.setCellValue("Projet || N°demande");
+		            HSSFCell cell5Sheet2=rowhead.createCell(5);
+		            cell5Sheet2.setCellValue("Durée");
+		            HSSFCell cell6Sheet2=rowhead.createCell(6);
+		            cell6Sheet2.setCellValue("Rôle");
+		            HSSFCell cell7Sheet2=rowhead.createCell(7);
+		            cell7Sheet2.setCellValue("Lieu");
+		            HSSFCell cell8Sheet2=rowhead.createCell(8);
+		            cell8Sheet2.setCellValue("Action");
+		            HSSFCell cell9Sheet2=rowhead.createCell(9);
+		            cell9Sheet2.setCellValue("Produits");
+		            HSSFCell cell10Sheet2=rowhead.createCell(10);
+		            cell10Sheet2.setCellValue("Commentaire");
+	               
+		            
+		            cell0Sheet2.setCellStyle(style);cell1Sheet2.setCellStyle(style);cell2Sheet2.setCellStyle(style);
+		            cell3Sheet2.setCellStyle(style);cell4Sheet2.setCellStyle(style);cell5Sheet2.setCellStyle(style);
+		            cell6Sheet2.setCellStyle(style);cell7Sheet2.setCellStyle(style);cell8Sheet2.setCellStyle(style);  cell9Sheet2.setCellStyle(style);  cell10Sheet2.setCellStyle(style);
+		               
+	               
+	               
 	            int i=1;
             for(Activity activity : activities) {
 	            HSSFRow row = sheet.createRow((short)i++);
@@ -671,6 +710,77 @@ public class EmailServiceImpl implements EmailService {
 	            sheet3.autoSizeColumn(11);
 	            sheet3.autoSizeColumn(12);
 	     
+
+            }
+            
+            int t=1;
+            for(Long idActivity : activityRepository.findActivityByUserByYear(username, new Date())) {
+	            Activity activity = activityRepository.findActivity(idActivity);
+            	HSSFRow row = sheet4.createRow((short)t++);
+	            Date dateSaisie= activity.getCreatedAt();
+	            
+	            String duration ="";
+	            row.createCell(0).setCellValue(formater.format(addHoursToDate(dateSaisie)));
+	            if(activity instanceof ActivityHoliday == false ) {
+	            	row.createCell(1).setCellValue(formater.format(addHoursToDate(activity.getDteStrt())));
+	            	 int hours = (int) (activity.getDurtion() / 60);
+	 	            int minutes = (int) (activity.getDurtion() % 60);
+	 	             duration =  String.format("%d", hours) + ":"+String.format("%02d", minutes); 
+	 	           
+	            }else {
+	            
+	            	row.createCell(1).setCellValue(formater.format(addHoursToDate(activity.getDteStrt()))+ " Au "+formater.format(addHoursToDate(activity.getDteEnd())));
+	            	 	
+	            		int hours = (int) ((activity.getDurtion()/24) / 60);
+		 	            //int minutes = (int) ((activity.getDurtion()/24) % 60); 
+		 	            duration =   (hours*8) + ":00";
+			 	           
+		 	            
+	            }
+	            row.createCell(2).setCellValue(activity.getTypeActivite());
+	            
+	            if(activity.getCustomer()!=null)
+	            	row.createCell(3).setCellValue(activity.getCustomer().getName());
+	            if(activity instanceof ActivityProject) {
+	            	 if(((ActivityProject)activity).getProject()!=null){
+	            	 row.createCell(4).setCellValue(((ActivityProject)activity).getProject().getPrjName());
+	            	 
+	            	 
+	            	 }
+	            }
+	            	 if(activity instanceof ActivityRequest) {
+		            	 if(((ActivityRequest)activity).getRequest()!=null){
+		            	 row.createCell(4).setCellValue(((ActivityRequest)activity).getRequest().getRqtExcde());
+		            	 
+		            	 }
+		            	 row.createCell(6).setCellValue((activity.isPrincipal()?"Principale":"Secondaire"));
+			 	           
+	            	 }
+	            	 if(activity instanceof ActivityPM) {
+		            	 if(((ActivityPM)activity).getRequest()!=null){
+		            	 row.createCell(4).setCellValue(((ActivityPM)activity).getRequest().getRqtExcde());
+		            }
+		            	 row.createCell(6).setCellValue((activity.isPrincipal()?"Principale":"Secondaire"));
+			 	           
+	            	 }
+	            
+	           
+	            row.createCell(5).setCellValue(duration);
+	            row.createCell(7).setCellValue(activity.getLieu());
+	            row.createCell(8).setCellValue(activity.getNature());
+	            row.createCell(9).setCellValue(getProduits(activity));
+	            row.createCell(10).setCellValue(activity.getComments());
+	            sheet4.autoSizeColumn(0);
+	            sheet4.autoSizeColumn(1);
+	            sheet4.autoSizeColumn(2);
+	            sheet4.autoSizeColumn(3);
+	            sheet4.autoSizeColumn(4);
+	            sheet4.autoSizeColumn(5);
+	            sheet4.autoSizeColumn(6);
+	            sheet4.autoSizeColumn(7);
+	            sheet4.autoSizeColumn(8);
+	            sheet4.autoSizeColumn(9);
+	            sheet4.autoSizeColumn(10);
 
             }
 

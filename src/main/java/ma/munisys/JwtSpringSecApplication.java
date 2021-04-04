@@ -130,7 +130,7 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 	}
 	
 	
-	@Scheduled(cron = "0 0 7 * * MON")//MON
+	@Scheduled(cron = "0 0 8 * * MON" ,zone="Africa/Casablanca")//MON
 	public static void SendReports() {
 		
 		if(isProdEnvironnement()==true) {
@@ -140,6 +140,7 @@ public class JwtSpringSecApplication implements CommandLineRunner {
 		}
 		
 	}
+	
 	/*
 	@Scheduled(cron = "0 10 10 * * *")//MON
 	public  void SendReportsDEv() {
