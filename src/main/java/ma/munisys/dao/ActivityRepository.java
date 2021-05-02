@@ -18,16 +18,16 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	@Query("select a from Activity a where a.user.username = :x order by a.dteStrt DESC")
 	public Page<Activity> getUserActivities(@Param("x")String username,Pageable pageable);
 	
-	@Query("select a from Activity a where a.user.username=:x and (a.nature like :y or a.lieu like :y or a.ville like :y) order by a.dteStrt DESC")
+	@Query("select a from Activity a  where a.user.username=:x and (a.nature like :y or a.lieu like :y or a.ville like :y or a.customer.name like :y or a.id IN ( select b from ActivityProject b where b.project.prjName like :y)) order by a.dteStrt DESC")
 	public Page<Activity> findMyActivitiesByMc(@Param("x")String username,@Param("y")String motCle,Pageable pageable);
 	
-	@Query("select a from Activity a where a.user.username=:x and (a.nature like :y or a.lieu like :y or a.ville like :y) and a.typeActivite in :type order by a.dteStrt DESC")
+	@Query("select a from Activity a where a.user.username=:x and  (a.nature like :y or a.lieu like :y or a.ville like :y or a.customer.name like :y) and a.typeActivite in :type order by a.dteStrt DESC")
 	public Page<Activity> findMyActivitiesByMcAndType(@Param("x")String username,@Param("y")String motCle,Pageable pageable, @Param("type") String[] typeSelected);
 	
-	@Query("select a from Activity a where (a.nature like :y or a.lieu like :y or a.ville like :y) order by a.dteStrt DESC")
+	@Query("select a from Activity a where (a.nature like :y or a.lieu like :y or a.ville like :y or a.customer.name like :y) order by a.dteStrt DESC")
 	public Page<Activity> findAllActivitiesByMc(@Param("y")String motCle,Pageable pageable);
 	
-	@Query("select a from Activity a where a.typeActivite in :type and (a.nature like :y or a.lieu like :y or a.ville like :y) order by a.dteStrt DESC")
+	@Query("select a from Activity a where a.typeActivite in :type and (a.nature like :y or a.lieu like :y or a.ville like :y or a.customer.name like :y) order by a.dteStrt DESC")
 	public Page<Activity> findAllActivitiesByMcAndType(@Param("y")String motCle,Pageable pageable, @Param("type") String[] typeSelected);
 	
 	@Query("select a from Activity a where a.user.username=:x and (a.dteStrt between :y and :z or a.dteEnd between :y and :z or (a.dteStrt<=:y and a.dteEnd>=:z)) and a.typeActivite != 'Activité congé' and a.typeActivite != 'Activité assistance' and a.statut = true")

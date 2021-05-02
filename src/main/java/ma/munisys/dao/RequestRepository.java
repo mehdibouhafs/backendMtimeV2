@@ -23,15 +23,15 @@ public interface RequestRepository extends JpaRepository<Request, String> {
 	public Page<Request> ticketsGroupe(@Param("id") Long id, @Param("x") String mc,Pageable pageable);
 	
 	
-	@Query("select r from Request r where r.cpyInCde.code =:x and( r.service is null or r.service.servName =:y)  and (r.rqtNatDsc is null or r.rqtNatDsc!='Maintenance préventive') order by r.rqtDte DESC")
-	public List<Request> getTicketByCustomerAndService( @Param("x") String codeClient,@Param("y") String service);
+	@Query("select r from Request r where r.cpyInCde.code =:x and (r.rqtNatDsc is null or r.rqtNatDsc!='Maintenance préventive') order by r.rqtDte DESC")
+	public List<Request> getTicketByCustomer( @Param("x") String codeClient);
 	
 	@Query("select r from Request r where (r.cpyInCde.code =:x  and r.rqtDte >= :date) and (r.rqtNatDsc is null or r.rqtNatDsc!='Maintenance préventive') order by r.rqtDte DESC")
-	public List<Request> getTicketByCustomerAndService( @Param("x") String codeClient , @Param("date") Date date);
+	public List<Request> getTicketByCustomer( @Param("x") String codeClient , @Param("date") Date date);
 	
 	
-	@Query("select r from Request r where r.cpyInCde.code =:x and( r.service is null or r.service.servName =:y)  and r.rqtNatDsc=:z order by r.rqtDte DESC")
-	public List<Request> getTicketByCustomerAndServiceAndNature( @Param("x") String codeClient , @Param("y") String service,@Param("z")String nature);
+	@Query("select r from Request r where r.cpyInCde.code =:x and r.rqtNatDsc=:z order by r.rqtDte DESC")
+	public List<Request> getTicketByCustomerAndNature( @Param("x") String codeClient ,@Param("z")String nature);
 	
 	
 	

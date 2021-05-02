@@ -51,13 +51,13 @@ public class RequestServiceImpl implements RequestService  {
 	@Override
 	public List<Request> getTicketByCustomerAndService(String codeClient,String serviceName) {
 		
-		return requestRepository.getTicketByCustomerAndService(codeClient,serviceName);
+		return requestRepository.getTicketByCustomer(codeClient);
 	}
 
 	@Override
 	public List<Request> getTicketByCustomerAndServiceAndNature(String codeClient, String service, String nature) {
 		// TODO Auto-generated method stub
-		return requestRepository.getTicketByCustomerAndServiceAndNature(codeClient, service, nature);
+		return requestRepository.getTicketByCustomerAndNature(codeClient, nature);
 	}
 
 	
